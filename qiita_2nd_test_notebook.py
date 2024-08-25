@@ -50,7 +50,28 @@ final_model = finalize_model(tuned_model) #モデルの確定
 # COMMAND ----------
 
 result = predict_model(final_model, data = data_unseen) #テストデータで予測
+result
 
 # COMMAND ----------
 
-result
+import pandas as pd 
+# databricks内のcsvデータ読み込み
+dataset = pd.read_csv('/Volumes/{catalog_name}/{schema_name}/{table_name}/train.csv', encoding='utf-8')
+data = dataset.sample(frac=0.9, random_state=789) #学習データ frac:抽出する行の割合、random_state:乱数シード
+data_unseen = dataset.drop(data.index) 
+data.reset_index(drop=True, inplace=True)
+data_unseen.reset_index(drop=True, inplace=True) #検証データ
+exp1 = setup(data=data, target='Survived', session_id=123, ignore_features=None) #前処理を実行
+best = compare_models() #モデル比較
+
+# COMMAND ----------
+
+# databricksのテーブルからデータを読み込み
+df= spark.read.table('{catalog_name}.{schema_name}.{table_name}')
+dataset = df.select("*").toPandas()
+data = dataset.sample(frac=0.9, random_state=789) #学習データ frac:抽出する行の割合、random_state:乱数シード
+data_unseen = dataset.drop(data.index) 
+data.reset_index(drop=True, inplace=True)
+data_unseen.reset_index(drop=True, inplace=True) #検証データ
+exp1 = setup(data=data, target='Survived', session_id=123, ignore_features=None) #前処理を実行
+best = compare_models() #モデル比較
