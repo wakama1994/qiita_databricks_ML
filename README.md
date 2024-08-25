@@ -1,2 +1,2 @@
 # qiita_databricks_ml
-Qiitaの記事執筆で使用したNotebook
+Qiitaのdatabricks関連の記事執筆で使用したNotebook
