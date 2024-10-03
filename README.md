@@ -1,2 +1,2 @@
 # qiita_databricks_ml
-Qiitaのdatabricks関連の記事執筆で使用したNotebook
+Qiitaの「Databricks Machine Learingの旅」の記事執筆で使用したNotebook
